@@ -12,7 +12,7 @@ const schema = require('./graphql/schema');
 const app = express();
 
 const {
-  MONGO_USER, MONGO_PASSWORD, MONGO_URL, MONGO_DB_NAME
+  MONGO_USER, MONGO_PASSWORD, MONGO_URL, MONGO_DB_NAME, PORT
 } = process.env;
 
 const mongoUserCredentials = MONGO_USER && MONGO_PASSWORD ? `${MONGO_USER}:${MONGO_PASSWORD}@` : '';
@@ -32,7 +32,7 @@ db.once('open', () => {
 });
 
 // start the server
-app.listen(8080, () => {
+app.listen(PORT || 8080, () => {
   console.log('+++Express Server is Running!!!');
 });
 
