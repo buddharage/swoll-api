@@ -1,4 +1,7 @@
+const graphql = require('graphql');
+
 const graphqlTools = require('graphql-tools');
+const isValidDate = require('date-fns/is_valid');
 
 // DB models
 const Session = require('../mongoose/session');
@@ -10,7 +13,7 @@ const typeDefs = require('./types');
 // GraphQL resolvers
 const resolvers = {
   Query: {
-    sessions: async (source, { date }) => {
+    session: async (source, { date }) => {
       const query = date
         ? {
           date: { $regex: `${date}.*` }
@@ -63,14 +66,16 @@ const resolvers = {
       return res;
     },
     addSession: async (source, { date }) => {
-      const formatDate = new Date(date);
       let res = false;
+      const formattedDate = new Date(date);
 
-      if (formatDate) {
+      if (isValidDate(formattedDate)) {
         res = await Session.create({
-          date: formatDate,
+          date: formattedDate,
           activites: []
         });
+      } else {
+        throw new graphql.GraphQLError('Date is not valid');
       }
 
       return res;

@@ -21,7 +21,7 @@ module.exports = `
   }
 
   type Query {
-    sessions(date: String): [Session]
+    session(date: String): [Session]
   }
 
   type Mutation {
