@@ -1,11 +1,9 @@
-const graphql = require('graphql');
-
 const graphqlTools = require('graphql-tools');
-const isValidDate = require('date-fns/is_valid');
 
 // DB models
-const Session = require('../mongoose/session');
+const Category = require('../mongoose/category');
 const Exercise = require('../mongoose/exercise');
+const Session = require('../mongoose/session');
 
 // GraphQL type definitions
 const typeDefs = require('./types');
@@ -13,42 +11,16 @@ const typeDefs = require('./types');
 // GraphQL resolvers
 const resolvers = {
   Query: {
-    session: async (source, { date }) => {
-      const query = date
-        ? {
-          date: { $regex: `${date}.*` }
-        }
-        : {};
-
-      const res = await Session.find(query);
-      return res;
-    }
+    session: Session.find,
+    sessions: Session.find,
+    exercise: Exercise.find,
+    exercises: Exercise.find,
+    categories: Category.find,
+    category: Category.find
   },
   Mutation: {
-    addExercise: async (source, { name }) => {
-      const res = await Exercise.create({ name });
-      return res;
-    },
-    addSet: async (source, { activityId, reps, weight }) => {
-      const res = await Session.findOneAndUpdate(
-        {
-          'activities._id': activityId
-        },
-        {
-          $push: {
-            'activities.$.sets': {
-              reps,
-              weight
-            }
-          }
-        },
-        { new: true }
-      );
-
-      return res;
-    },
     addActivity: async (source, { sessionId, exerciseId }) => {
-      const res = await Session.findOneAndUpdate(
+      const res = await Session.model.findOneAndUpdate(
         {
           _id: sessionId
         },
@@ -65,21 +37,28 @@ const resolvers = {
 
       return res;
     },
-    addSession: async (source, { date }) => {
-      let res = false;
-      const formattedDate = new Date(date);
-
-      if (isValidDate(formattedDate)) {
-        res = await Session.create({
-          date: formattedDate,
-          activites: []
-        });
-      } else {
-        throw new graphql.GraphQLError('Date is not valid');
-      }
+    addCategory: Category.add,
+    addExercise: Exercise.add,
+    addSession: Session.add,
+    addSet: async (source, { activityId, reps, weight }) => {
+      const res = await Session.model.findOneAndUpdate(
+        {
+          'activities._id': activityId
+        },
+        {
+          $push: {
+            'activities.$.sets': {
+              reps,
+              weight
+            }
+          }
+        },
+        { new: true }
+      );
 
       return res;
-    }
+    },
+    updateExercise: Exercise.update
   }
 };
 

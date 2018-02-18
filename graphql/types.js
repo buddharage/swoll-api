@@ -1,6 +1,12 @@
 module.exports = `
   type Exercise {
-    _id: String
+    _id: String!
+    name: String!
+    categories: [Category]
+  }
+
+  type Category {
+    _id: String!
     name: String!
   }
 
@@ -21,11 +27,20 @@ module.exports = `
   }
 
   type Query {
+    categories: [Category]
+    category(id: String): [Category]
+    exercise(id: String): [Exercise]
+    exercises: [Exercise]
     session(date: String): [Session]
+    sessions: [Session]
   }
 
   type Mutation {
     addExercise(name: String!): Exercise
+
+    updateExercise(id: String!, categories: [String]): Exercise
+
+    addCategory(name: String!): Category
 
     addSet(
       activityId: String!

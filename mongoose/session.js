@@ -1,3 +1,5 @@
+const graphql = require('graphql');
+const isValidDate = require('date-fns/is_valid');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -15,7 +17,7 @@ const ActivitySchema = new Schema({
   sets: [SetSchema]
 });
 
-module.exports = mongoose.model(
+const Session = mongoose.model(
   'session',
   new Schema(
     {
@@ -27,3 +29,32 @@ module.exports = mongoose.model(
     }
   )
 );
+
+exports.add = async (source, { date }) => {
+  let res = false;
+  const formattedDate = new Date(date);
+
+  if (isValidDate(formattedDate)) {
+    res = await Session.create({
+      date: formattedDate,
+      activites: []
+    });
+  } else {
+    throw new graphql.GraphQLError('Date is not valid');
+  }
+
+  return res;
+};
+
+exports.find = async (source, { id }) => {
+  const query = id
+    ? {
+      id
+    }
+    : {};
+
+  const res = await Session.find(query);
+  return res;
+};
+
+exports.model = Session;
