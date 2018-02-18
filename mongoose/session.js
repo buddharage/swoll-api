@@ -6,7 +6,8 @@ const { Schema } = mongoose;
 
 const SetSchema = new Schema({
   weight: Number,
-  reps: Number
+  reps: Number,
+  duration: Number
 });
 
 const ActivitySchema = new Schema({
@@ -22,7 +23,8 @@ const Session = mongoose.model(
   new Schema(
     {
       date: String,
-      activities: [ActivitySchema]
+      activities: [ActivitySchema],
+      notes: String
     },
     {
       collection: 'Sessions'

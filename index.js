@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,10 +13,15 @@ const schema = require('./graphql/schema');
 const app = express();
 
 const {
-  MONGO_USER, MONGO_PASSWORD, MONGO_URL, MONGO_DB_NAME, PORT
+  MONGO_USER,
+  MONGO_PASSWORD,
+  MONGO_URL,
+  MONGO_DB_NAME,
+  PORT
 } = process.env;
 
-const mongoUserCredentials = MONGO_USER && MONGO_PASSWORD ? `${MONGO_USER}:${MONGO_PASSWORD}@` : '';
+const mongoUserCredentials =
+  MONGO_USER && MONGO_PASSWORD ? `${MONGO_USER}:${MONGO_PASSWORD}@` : '';
 
 const MONGO_CONNECTION_STRING = `mongodb://${mongoUserCredentials}${MONGO_URL}/${MONGO_DB_NAME}`;
 
@@ -33,8 +39,10 @@ db.once('open', () => {
 
 // start the server
 app.listen(PORT || 8080, () => {
-  console.log('+++Express Server is Running!!!');
+  console.log('Swoll is on patrol - server online');
 });
+
+app.use(cors());
 
 app.use(
   '/graphql',

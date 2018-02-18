@@ -14,11 +14,13 @@ module.exports = `
     _id: String
     date: String!
     activities: [Activity]
+    notes: String
   }
 
   type Set {
     weight: Int
-    reps: Int
+    reps: Int,
+    duration: Int
   }
 
   type Activity {
@@ -45,7 +47,8 @@ module.exports = `
     addSet(
       activityId: String!
       weight: Int!
-      reps: Int!
+      reps: Int,
+      duration: Int
     ): Session
 
     addActivity(
