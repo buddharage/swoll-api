@@ -13,7 +13,9 @@
     "url": "git+https://github.com/buddharage/swoll-api.git"
   },
   "engines": {
-    "node": "7.10.0"
+    "node": "^7.10.0",
+    "npm": "^4.2.0",
+    "yarn": "^0.24.5"
   },
   "keywords": ["fitness", "exercise"],
   "author": "Thai Le",
