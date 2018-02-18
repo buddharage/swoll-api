@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -9,15 +11,13 @@ const schema = require('./graphql/schema');
 
 const app = express();
 
-let mongoUserCredentials = '';
+const {
+  MONGO_USER, MONGO_PASSWORD, MONGO_URL, MONGO_DB_NAME
+} = process.env;
 
-if (process.env.MONGO_USER && process.env.MONGO_PASSWORD) {
-  mongoUserCredentials = `${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@`;
-}
+const mongoUserCredentials = MONGO_USER && MONGO_PASSWORD ? `${MONGO_USER}:${MONGO_PASSWORD}@` : '';
 
-const MONGO_URL = process.env.MONGO_URL || 'localhost:27017';
-const DB_NAME = process.env.MONGO_DB_NAME || 'swoll';
-const MONGO_CONNECTION_STRING = `mongodb://${mongoUserCredentials}${MONGO_URL}/${DB_NAME}`;
+const MONGO_CONNECTION_STRING = `mongodb://${mongoUserCredentials}${MONGO_URL}/${MONGO_DB_NAME}`;
 
 mongoose.connect(MONGO_CONNECTION_STRING);
 
