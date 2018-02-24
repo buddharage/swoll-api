@@ -16,15 +16,15 @@ const Exercise = mongoose.model(
 );
 
 exports.add = async (source, { name }) => {
-  const res = await Exercise.create({ name });
+  const res = await Exercise.create({ name, categories: [] });
   return res;
 };
 
 exports.find = async (source, { date }) => {
   const query = date
     ? {
-      date: { $regex: `${date}.*` }
-    }
+        date: { $regex: `${date}.*` }
+      }
     : {};
 
   const res = await Exercise.find(query);
