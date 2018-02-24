@@ -33,7 +33,7 @@ module.exports = `
     category(id: String): [Category]
     exercise(id: String): [Exercise]
     exercises: [Exercise]
-    session(date: String): [Session]
+    session(id: String): [Session]
     sessions: [Session]
   }
 
