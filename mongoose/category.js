@@ -22,8 +22,8 @@ exports.add = async (source, { name }) => {
 exports.find = async (source, { id }) => {
   const query = id
     ? {
-      id
-    }
+        _id: id
+      }
     : {};
 
   const res = await Category.find(query);
