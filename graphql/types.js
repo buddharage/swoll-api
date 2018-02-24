@@ -18,14 +18,14 @@ module.exports = `
   }
 
   type Set {
-    _id
+    _id: String!
     weight: Int
     reps: Int,
     duration: Int
   }
 
   type Activity {
-    _id
+    _id: String!
     exerciseId: String
     sets: [Set]
   }
